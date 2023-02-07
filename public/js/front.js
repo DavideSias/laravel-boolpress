@@ -5059,20 +5059,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5081,17 +5067,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Navbar: _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     FooterComponent: _components_FooterComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  data: function data() {
-    return {
-      arrPosts: []
-    };
-  },
-  created: function created() {
-    var _this = this;
-    axios.get('/api/posts').then(function (response) {
-      return _this.arrPosts = response.data.results;
-    });
   }
 });
 
@@ -5226,8 +5201,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      arrRandom: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+    axios.get('api/posts/random').then(function (response) {
+      return _this.arrRandom = response.data.results;
+    });
+  }
+});
 
 /***/ }),
 
@@ -5251,9 +5241,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['slug']
+  props: ['slug'],
+  data: function data() {
+    return {
+      objPost: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+    axios.get('/api/posts/' + this.slug).then(function (response) {
+      return _this.objPost = response.data.results;
+    });
+  }
 });
 
 /***/ }),
@@ -5275,8 +5283,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      results: []
+    };
+  },
+  methods: {
+    changePage: function changePage(page) {
+      var _this = this;
+      axios.get('/api/posts?page=' + page).then(function (response) {
+        return _this.results = response.data.results;
+      });
+    }
+  },
+  created: function created() {
+    this.changePage(1);
+  }
+});
 
 /***/ }),
 
@@ -29088,9 +29148,16 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n  Footer\n")])
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [_c("h1", [_vm._v("Footer component")])])
+  },
+]
 render._withStripped = true
 
 
@@ -29313,16 +29380,21 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h1", [_vm._v("Home Page")]),
+      _vm._v(" "),
+      _vm._l(_vm.arrRandom, function (post) {
+        return _c("div", { key: post.id }, [
+          _c("img", { attrs: { src: post.image, alt: post.title } }),
+        ])
+      }),
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Home Page")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -29346,9 +29418,35 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Show Post")]),
-    _vm._v(" "),
-    _c("p", [_vm._v("\n    Lo slug del post è: " + _vm._s(_vm.slug) + "\n  ")]),
+    _vm.objPost
+      ? _c("div", { staticClass: "container" }, [
+          _c("h1", [_vm._v(_vm._s(_vm.objPost.title))]),
+          _vm._v(" "),
+          _c("h2", [_vm._v("Categoria: " + _vm._s(_vm.objPost.category.name))]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _vm._v("\n            Tags: "),
+              _vm._l(_vm.objPost.tags, function (tag) {
+                return _c("span", { key: tag.id }, [
+                  _vm._v("- " + _vm._s(tag.name) + " "),
+                ])
+              }),
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("img", {
+            staticClass: "card-img-top",
+            attrs: { src: _vm.objPost.image, alt: _vm.objPost.title },
+          }),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v("\n          " + _vm._s(_vm.objPost.content) + "\n        "),
+          ]),
+        ])
+      : _vm._e(),
   ])
 }
 var staticRenderFns = []
@@ -29374,16 +29472,121 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h1", [_vm._v("Index Posts")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("h1", [_vm._v("Primo componente Vue")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row row-cols-1 row-cols-md-4 g-4 mt-3" },
+        _vm._l(_vm.results.data, function (post) {
+          return _c("div", { key: post.id, staticClass: "col" }, [
+            _c("div", { staticClass: "card h-100" }, [
+              _c("img", {
+                staticClass: "card-img-top",
+                attrs: { src: post.image, alt: post.title },
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-body d-flex flex-column" },
+                [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(post.title)),
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text flex-grow-1" }, [
+                    _vm._v(_vm._s(post.excerpt)),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: {
+                        to: { name: "postsShow", params: { slug: post.slug } },
+                      },
+                    },
+                    [_vm._v("Visita")]
+                  ),
+                ],
+                1
+              ),
+            ]),
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("nav", { staticClass: "mt-5", attrs: { "aria-label": "..." } }, [
+        _c(
+          "ul",
+          { staticClass: "pagination" },
+          [
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: { disabled: _vm.results.current_page == 1 },
+                on: {
+                  click: function ($event) {
+                    return _vm.changePage(_vm.results.current_page - 1)
+                  },
+                },
+              },
+              [_c("span", { staticClass: "page-link" }, [_vm._v("Previous")])]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.results.last_page, function (page) {
+              return _c(
+                "li",
+                {
+                  key: page,
+                  staticClass: "page-item",
+                  class: { active: _vm.results.current_page == page },
+                  on: {
+                    click: function ($event) {
+                      return _vm.changePage(page)
+                    },
+                  },
+                },
+                [
+                  _c("span", { staticClass: "page-link" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(page) +
+                        "\n                    "
+                    ),
+                  ]),
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: {
+                  disabled: _vm.results.current_page == _vm.results.last_page,
+                },
+                on: {
+                  click: function ($event) {
+                    return _vm.changePage(_vm.results.current_page + 1)
+                  },
+                },
+              },
+              [_c("span", { staticClass: "page-link" }, [_vm._v("Next")])]
+            ),
+          ],
+          2
+        ),
+      ]),
+    ]),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Index Posts")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
